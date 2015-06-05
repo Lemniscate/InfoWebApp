@@ -1,5 +1,6 @@
 package com.github.lemniscate.infoapp;
 
+import com.github.lemniscate.infoapp.util.Curl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,8 @@ public class InfoWebAppApplication {
 @Controller
 class InfoController {
 
+    private final Curl curl = new Curl();
+
     @ResponseBody
     @RequestMapping(value = "/headers", produces = "application/json")
     public Object headers(HttpServletRequest request){
@@ -37,6 +40,33 @@ class InfoController {
                 result.add(name, header);
             }
         }
+        return result;
+    }
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/servlet", produces = "application/json")
+    public Object servlet(HttpServletRequest request){
+        MultiValueMap<String, Object> result = new LinkedMultiValueMap<String, Object>();
+        result.add("serverName", request.getServerName());
+        result.add("serverPort", request.getServerPort());
+        result.add("servletPath", request.getServletPath());
+        result.add("remoteAddr", request.getRemoteAddr());
+        result.add("remoteHost", request.getRemoteHost());
+        result.add("remotePort", request.getRemotePort());
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/aws", produces = "application/json")
+    public Object aws(HttpServletRequest request){
+        MultiValueMap<String, Object> result = new LinkedMultiValueMap<String, Object>();
+
+        result.add("ifconfigIP", curl.getOrElse("http://ifconfig.me", "unknown").replace("\n", ""));
+        result.add("awsLocalIP", curl.getOrElse("http://169.254.169.254/latest/meta-data/local-ipv4", "unknown"));
+        result.add("awsPublicIP", curl.getOrElse("http://169.254.169.254/latest/meta-data/public-ipv4", "unknown"));
+
         return result;
     }
 }
