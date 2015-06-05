@@ -51,7 +51,7 @@ class InfoController {
         MultiValueMap<String, Object> result = new LinkedMultiValueMap<String, Object>();
         result.add("serverName", request.getServerName());
         result.add("serverPort", request.getServerPort());
-        result.add("servletPath", request.getServletPath());
+        result.add("contextPath", request.getContextPath());
         result.add("remoteAddr", request.getRemoteAddr());
         result.add("remoteHost", request.getRemoteHost());
         result.add("remotePort", request.getRemotePort());
