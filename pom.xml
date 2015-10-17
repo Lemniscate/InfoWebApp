@@ -40,7 +40,8 @@
 		</dependency>
 	</dependencies>
 	
-	<build>
+	<build> 
+		<finalName>info-webapp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
